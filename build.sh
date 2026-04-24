@@ -20,7 +20,7 @@
 
 set -e
 
-GO="${GO:-/usr/local/go/bin/go}"
+GO="${GO:-go}"
 SRC="./bindings/c_api.go"
 DIST="./dist"
 
