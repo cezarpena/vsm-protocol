@@ -67,7 +67,6 @@ case "${1:-current}" in
     ci-linux)
         # Called from GitHub Actions on a Linux runner
         build linux amd64 .so
-        build linux arm64 .so
         ;;
     ci-windows)
         # Called from GitHub Actions on a Windows runner
