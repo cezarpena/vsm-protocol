@@ -91,4 +91,3 @@ Requires **Go 1.21+** and a C compiler (gcc/clang) for CGO.
 MIT License - See [LICENSE](LICENSE) for details.
 
 ---
-*Created by Antigravity for the VSM-Cell Project.*
