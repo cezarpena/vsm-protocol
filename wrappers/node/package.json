@@ -1,0 +1,16 @@
+{
+  "name": "vsmprotocol",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "VSM Stealth Protocol - Invisible P2P encrypted transport",
+  "main": "index.js",
+  "scripts": {
+    "test:server": "node ../vsm_server.js",
+    "test:client": "node ../vsm_client.js"
+  },
+  "keywords": ["stealth", "p2p", "encryption", "noise", "protocol"],
+  "license": "MIT",
+  "dependencies": {
+    "koffi": "^2.9.0"
+  }
+}

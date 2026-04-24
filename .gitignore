@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+
+# Node
+node_modules/
+
+# Rust
+wrappers/rust/target/
+
+# Build artifacts in root (use dist/ for committed binaries)
+/vsmprotocol.dylib
+/vsmprotocol.h
+/vsmprotocol.so
+/vsmprotocol.dll
+/vsm_test
+
+# OS
+.DS_Store
