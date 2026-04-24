@@ -94,8 +94,22 @@ jobs:
       - name: Prepare Release Assets
         run: |
           mkdir -p dist-assets
-          find release-assets -type f -exec cp {} dist-assets/ \;
-          cp dist/vsmprotocol.h dist-assets/ || echo "Header not found"
+          # Walk through artifacts and rename them to include platform/arch
+          # Pattern: release-assets/vsmprotocol-macos/darwin-arm64/vsmprotocol.dylib
+          # Target: dist-assets/vsmprotocol-darwin-arm64.dylib
+          
+          # Linux
+          cp release-assets/vsmprotocol-linux/linux-amd64/vsmprotocol.so dist-assets/vsmprotocol-linux-amd64.so || true
+          
+          # MacOS
+          cp release-assets/vsmprotocol-macos/darwin-arm64/vsmprotocol.dylib dist-assets/vsmprotocol-darwin-arm64.dylib || true
+          cp release-assets/vsmprotocol-macos/darwin-amd64/vsmprotocol.dylib dist-assets/vsmprotocol-darwin-amd64.dylib || true
+          
+          # Windows
+          cp release-assets/vsmprotocol-windows/windows-amd64/vsmprotocol.dll dist-assets/vsmprotocol-windows-amd64.dll || true
+          
+          # Header
+          cp dist/vsmprotocol.h dist-assets/vsmprotocol.h || echo "Header not found"
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
