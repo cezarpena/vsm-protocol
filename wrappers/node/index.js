@@ -22,7 +22,8 @@ function getLibPath() {
     const extMap = { darwin: '.dylib', linux: '.so', win32: '.dll' };
     const ext = extMap[platform] || '.so';
 
-    return path.resolve(__dirname, '../../dist', `${goOS}-${goArch}`, `vsmprotocol${ext}`);
+    // Look inside the package's own dist/ folder
+    return path.resolve(__dirname, './dist', `${goOS}-${goArch}`, `vsmprotocol${ext}`);
 }
 
 const lib = koffi.load(getLibPath());

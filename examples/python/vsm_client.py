@@ -1,4 +1,10 @@
-import vsmprotocol as vsm
+import sys
+import os
+
+# Allow importing from the wrappers directory
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../wrappers/python')))
+
+import __init__ as vsm
 
 server_id_json = {
     "id": "7hKot6Oqrv0BkXA_K20uOTPzAfTNAJ6Cn5Qa6IKR5NA", 

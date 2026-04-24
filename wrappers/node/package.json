@@ -1,14 +1,28 @@
 {
   "name": "vsmprotocol",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "VSM Stealth Protocol - Invisible P2P encrypted transport",
   "main": "index.js",
-  "scripts": {
-    "test:server": "node ../vsm_server.js",
-    "test:client": "node ../vsm_client.js"
+  "files": [
+    "index.js",
+    "README.md",
+    "dist/**/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cezarpena/vsm-protocol.git"
   },
-  "keywords": ["stealth", "p2p", "encryption", "noise", "protocol"],
+  "scripts": {
+    "test": "node ../../examples/node/vsm_client.js"
+  },
+  "keywords": [
+    "stealth",
+    "p2p",
+    "encryption",
+    "noise",
+    "protocol"
+  ],
   "license": "MIT",
   "dependencies": {
     "koffi": "^2.9.0"
