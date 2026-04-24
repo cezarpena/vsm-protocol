@@ -2,6 +2,10 @@
 name = "vsmprotocol"
 version = "0.1.0"
 edition = "2021"
+description = "VSM Stealth Protocol - Invisible P2P encrypted transport"
+license = "MIT"
+repository = "https://github.com/cezarpena/vsm-protocol"
+keywords = ["stealth", "p2p", "encryption", "noise"]
 
 [dependencies]
 libloading = "0.8"
