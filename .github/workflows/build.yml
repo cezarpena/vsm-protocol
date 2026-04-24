@@ -49,8 +49,36 @@ jobs:
           name: vsmprotocol-linux
           path: dist/linux-*/*
 
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+      
+      - name: Download WinPcap SDK
+        run: |
+          Invoke-WebRequest -Uri "https://www.winpcap.org/install/bin/WpdPack_4_1_2.zip" -OutFile "WpdPack.zip"
+          Expand-Archive -Path "WpdPack.zip" -DestinationPath "."
+
+      - name: Build Windows binaries
+        shell: bash
+        run: |
+          export CGO_CFLAGS="-I$(pwd)/WpdPack/Include"
+          export CGO_LDFLAGS="-L$(pwd)/WpdPack/Lib/x64"
+          chmod +x build.sh
+          ./build.sh ci-windows
+          
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsmprotocol-windows
+          path: dist/windows-*/*
+
   release:
-    needs: [build-macos, build-linux]
+    needs: [build-macos, build-linux, build-windows]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -65,10 +93,8 @@ jobs:
       - name: Prepare Release Assets
         run: |
           mkdir -p dist-assets
-          # Move artifacts to a flat structure for the release
           find release-assets -type f -exec cp {} dist-assets/ \;
-          # Also include the header file
-          cp dist/vsmprotocol.h dist-assets/ || cp bindings/vsmprotocol.h dist-assets/ || echo "Header not found"
+          cp dist/vsmprotocol.h dist-assets/ || echo "Header not found"
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
