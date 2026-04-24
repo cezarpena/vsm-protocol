@@ -58,16 +58,17 @@ jobs:
         with:
           go-version: '1.21'
       
-      - name: Download WinPcap SDK
+      - name: Download Npcap SDK
         run: |
-          Invoke-WebRequest -Uri "https://www.winpcap.org/install/bin/WpdPack_4_1_2.zip" -OutFile "WpdPack.zip"
-          Expand-Archive -Path "WpdPack.zip" -DestinationPath "."
+          Invoke-WebRequest -Uri "https://npcap.com/dist/npcap-sdk-1.13.zip" -OutFile "npcap-sdk.zip"
+          Expand-Archive -Path "npcap-sdk.zip" -DestinationPath "npcap-sdk"
 
       - name: Build Windows binaries
         shell: bash
         run: |
-          export CGO_CFLAGS="-I$(pwd)/WpdPack/Include"
-          export CGO_LDFLAGS="-L$(pwd)/WpdPack/Lib/x64"
+          # Npcap SDK has a slightly different folder structure
+          export CGO_CFLAGS="-I$(pwd)/npcap-sdk/Include"
+          export CGO_LDFLAGS="-L$(pwd)/npcap-sdk/Lib/x64"
           chmod +x build.sh
           ./build.sh ci-windows
           
