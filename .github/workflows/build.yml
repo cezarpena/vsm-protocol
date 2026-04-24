@@ -1,0 +1,79 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger on version tags like v0.1.0
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+      
+      - name: Build macOS binaries
+        run: |
+          chmod +x build.sh
+          ./build.sh all
+          
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsmprotocol-macos
+          path: dist/darwin-*/*
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+      
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libpcap-dev
+        
+      - name: Build Linux binaries
+        run: |
+          chmod +x build.sh
+          ./build.sh ci-linux
+          
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsmprotocol-linux
+          path: dist/linux-*/*
+
+  release:
+    needs: [build-macos, build-linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+
+      - name: Prepare Release Assets
+        run: |
+          mkdir -p dist-assets
+          # Move artifacts to a flat structure for the release
+          find release-assets -type f -exec cp {} dist-assets/ \;
+          # Also include the header file
+          cp dist/vsmprotocol.h dist-assets/ || cp bindings/vsmprotocol.h dist-assets/ || echo "Header not found"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist-assets/*
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
