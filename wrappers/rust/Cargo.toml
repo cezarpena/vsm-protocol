@@ -1,6 +1,6 @@
 [package]
 name = "vsmprotocol"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "VSM Stealth Protocol - Invisible P2P encrypted transport"
 license = "MIT"
