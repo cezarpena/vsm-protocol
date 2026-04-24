@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: vsmprotocol
-Version: 0.1.0
+Version: 0.1.1
 Summary: VSM Stealth Protocol - Invisible P2P encrypted transport
 Author-email: Cezar Pena <cezar@example.com>
 License: MIT
@@ -12,6 +12,8 @@ Requires-Python: >=3.8
 Description-Content-Type: text/markdown
 
 # vsmprotocol (Python SDK)
+
+## 🔗 [GitHub Repository: cezarpena/vsm-protocol](https://github.com/cezarpena/vsm-protocol)
 
 **VSM Stealth Protocol** — Invisible P2P encrypted transport for Python.
 

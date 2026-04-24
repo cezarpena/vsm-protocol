@@ -1,5 +1,7 @@
 # vsmprotocol (Python SDK)
 
+## 🔗 [GitHub Repository: cezarpena/vsm-protocol](https://github.com/cezarpena/vsm-protocol)
+
 **VSM Stealth Protocol** — Invisible P2P encrypted transport for Python.
 
 Enable bidirectional encrypted communication without opening a single port. `vsmprotocol` uses raw packet injection to create stealth tunnels that bypass the standard OS socket table.

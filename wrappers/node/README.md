@@ -1,5 +1,7 @@
 # vsmprotocol
 
+## 🔗 [GitHub Repository: cezarpena/vsm-protocol](https://github.com/cezarpena/vsm-protocol)
+
 **VSM Stealth Protocol** — A high-performance, invisible P2P encrypted transport for Node.js.
 
 [![npm version](https://badge.fury.io/js/vsmprotocol.svg)](https://www.npmjs.com/package/vsmprotocol)
