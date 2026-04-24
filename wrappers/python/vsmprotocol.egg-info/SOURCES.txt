@@ -1,0 +1,16 @@
+README.md
+pyproject.toml
+vsmprotocol/__init__.py
+vsmprotocol.egg-info/PKG-INFO
+vsmprotocol.egg-info/SOURCES.txt
+vsmprotocol.egg-info/dependency_links.txt
+vsmprotocol.egg-info/top_level.txt
+vsmprotocol/dist/vsmprotocol.h
+vsmprotocol/dist/darwin-amd64/vsmprotocol.dylib
+vsmprotocol/dist/darwin-amd64/vsmprotocol.h
+vsmprotocol/dist/darwin-arm64/vsmprotocol.dylib
+vsmprotocol/dist/darwin-arm64/vsmprotocol.h
+vsmprotocol/dist/linux-amd64/vsmprotocol.h
+vsmprotocol/dist/linux-amd64/vsmprotocol.so
+vsmprotocol/dist/windows-amd64/vsmprotocol.dll
+vsmprotocol/dist/windows-amd64/vsmprotocol.h

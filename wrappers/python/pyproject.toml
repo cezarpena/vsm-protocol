@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vsmprotocol"
+version = "0.1.0"
+description = "VSM Stealth Protocol - Invisible P2P encrypted transport"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+  {name = "Cezar Pena", email = "cezar@example.com"}
+]
+keywords = ["stealth", "p2p", "encryption", "noise", "protocol"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.package-data]
+vsmprotocol = ["dist/**/*"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["vsmprotocol*"]

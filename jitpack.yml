@@ -1,0 +1,7 @@
+# JitPack Configuration
+jdk:
+  - openjdk17
+
+# Direct JitPack to the Java wrapper directory
+install:
+  - cd wrappers/java && ./gradlew install -Pgroup=com.github.cezarpena

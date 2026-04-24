@@ -1,0 +1,47 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'vsm.protocol'
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // JNA is what we use to load the .dylib / .so / .dll
+    api 'net.java.dev.jna:jna:5.13.0'
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            
+            pom {
+                name = 'VSM Protocol Java SDK'
+                description = 'Invisible P2P encrypted transport for JVM'
+                url = 'https://github.com/cezarpena/vsm-protocol'
+                licenses {
+                    license {
+                        name = 'The MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'cezarpena'
+                        name = 'Cezar Pena'
+                    }
+                }
+            }
+        }
+    }
+}
