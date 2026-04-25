@@ -1,24 +1,36 @@
-# vsmprotocol (Python SDK)
+# vsmprotocol
 
-## 🔗 [GitHub Repository: cezarpena/vsm-protocol](https://github.com/cezarpena/vsm-protocol)
+## [GitHub: cezarpena/vsm-protocol](https://github.com/cezarpena/vsm-protocol)
 
-**VSM Stealth Protocol** — Invisible P2P encrypted transport for Python.
+Make a port invisible to every scanner on the internet — then talk through it anyway.
 
-Enable bidirectional encrypted communication without opening a single port. `vsmprotocol` uses raw packet injection to create stealth tunnels that bypass the standard OS socket table.
+VSM does not open sockets. There is no `listen()`, no `accept()`, no entry in `netstat` or `lsof`. The port does not exist as far as the operating system is concerned. But authorized peers can still connect, because the server is sniffing raw packets with `libpcap` and looking for a specific cryptographic signature hidden inside the TCP header.
+
+### The Trick: ISN Steganography
+
+Every TCP connection starts with a SYN packet that carries a 32-bit **Initial Sequence Number**. Normally this is random noise. VSM replaces it with an **HMAC-SHA256 signature** derived from the peer's private key and the current 30-second time window.
+
+The server extracts the ISN from every incoming SYN, computes what the correct value should be, and compares:
+- **Mismatch** → packet is silently dropped. No response. Port appears dead.
+- **Match** → server injects a raw SYN-ACK, completing a handshake entirely outside the kernel.
+
+After the stealth handshake, a Noise XX key exchange provides mutual authentication and ChaCha20-Poly1305 encryption.
 
 ---
 
-## 🚀 Quick Start
+## Install
 
-### 1. Installation
 ```bash
 pip install vsmprotocol
 ```
 
-*Note: Requires `sudo` (root) permissions to inject and sniff raw packets.*
+Requires `sudo` — raw packet injection needs root.
 
-### 2. Setup Firewalls (Mandatory)
-Silence outgoing RST packets on your chosen port:
+---
+
+## Firewall Setup (Required)
+
+The kernel will send RST packets for traffic on ports it doesn't know about. You must silence them:
 
 **macOS:**
 ```bash
@@ -27,45 +39,54 @@ echo "block drop out proto tcp from any to any port 9999" | sudo pfctl -a "com.a
 
 **Linux:**
 ```bash
-sudo iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP
+sudo iptables -A OUTPUT -p tcp --tcp-flags RST RST --sport 9999 -j DROP
 ```
 
 ---
 
-## 💻 Usage
+## Usage
 
-### Start a Stealth Server
+### Server
 ```python
 import vsmprotocol as vsm
 import time
 
 def on_knock(sid, peer):
-    print(f" [SRV] Knock from {peer.decode()}")
+    print(f"Stealth connection from {peer.decode()}")
 
 def on_msg(sid, peer, msg):
-    print(f" [SRV] Message: {msg.decode()}")
+    print(f"{peer.decode()}: {msg.decode()}")
 
-server_id = vsm.generate_identity()
+identity = vsm.generate_identity()
 
-# KEEP THE RETURN VALUE IN A VARIABLE to prevent Garbage Collection
-refs = vsm.start_server(9999, server_id, on_knock, on_msg)
+# Store the return value — prevents garbage collection of C callbacks
+refs = vsm.start_server(9999, identity, on_knock, on_msg)
 
 while True:
     time.sleep(1)
 ```
 
-### Dial a Server
+### Client
 ```python
 import vsmprotocol as vsm
 
-my_id = vsm.generate_identity()
-sid = vsm.dial("lo0", "127.0.0.1", 9999, my_id)
+identity = vsm.generate_identity()
+sid = vsm.dial("lo0", "127.0.0.1", 9999, identity)
 
 if sid != -1:
-    vsm.send_message(sid, "Hello from the ghost network.")
+    vsm.send_message(sid, "Message through an invisible port.")
 ```
 
 ---
 
-## 📜 License
-MIT
+## What's Inside
+
+- **Core**: Go shared library using `libpcap` for raw packet injection/sniffing
+- **FFI**: `ctypes` for zero-dependency native calls from Python
+- **Encryption**: Noise XX handshake → ChaCha20-Poly1305
+- **Bundled binaries**: macOS (ARM + Intel), Linux (AMD64), Windows (AMD64)
+
+---
+
+## License
+MIT · © 2026 Cezar Pena
